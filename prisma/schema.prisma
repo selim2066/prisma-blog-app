@@ -13,39 +13,54 @@ datasource db {
   provider = "postgresql"
 }
 
-model Post{
-  id String @id @default(uuid())
-  title String @db.VarChar(225)
-  content String @db.Text
-  thumbnail String?
+model Post {
+  id         String     @id @default(uuid())
+  title      String     @db.VarChar(225)
+  content    String     @db.Text
+  thumbnail  String?
   isFeatured Boolean
-  status PostStatus @default(PUBLISHED)
-  tags String[]
-  views Int @default(0)
+  status     PostStatus @default(PUBLISHED)
+  tags       String[]
+  views      Int        @default(0)
+  authorId   String
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  comments Comment[]
+
+  //indexing and mapping
+  @@index([authorId])
+  @@map("posts")
+}
+
+model Comment {
+  id       String    @id @default(uuid())
+  content  String    @db.Text
   authorId String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  // foreign key relations
+  postId   String
+  post     Post      @relation(fields: [postId], references: [id])
+  parentId String?
+  // self relation for comment replies
+  parent   Comment?  @relation("commentsReplies", fields: [parentId], references: [id])
+  replies  Comment[] @relation("commentsReplies")
 
+  status    CommentStatus @default(APPROVED)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  commentId String?
+
+  @@index([postId])
+  @@map("comments")
 }
 
-model Comment{
-  id String @id @default(uuid())
-  content String @db.Text
-  authorId String
-  postId String
-  parentId String
-  status CommentStatus @default(APPROVED)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
 }
 
-enum PostStatus{
-DRAFT
-PUBLISHED
-ARCHIVED
-}
-
-enum CommentStatus{
+enum CommentStatus {
   APPROVED
   REJECT
 }
