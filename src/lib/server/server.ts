@@ -1,11 +1,14 @@
-import app from "../../../app";
+import dotenv from "dotenv";
+import app from "../../app";
 import { prisma } from "../prisma";
+dotenv.config();
+const PORT = process.env.PORT;
 
-const PORT = process.env.PORT || 3000;
+console.log(typeof(PORT))
 async function main() {
   try {
     await prisma.$connect();
-    console.log("server successfully connected");
+    console.log("server successfully connected", PORT);
 
     app.listen(PORT, () => {
       console.log("Server is running on http://localhost:" + PORT);
