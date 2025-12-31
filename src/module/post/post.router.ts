@@ -1,9 +1,7 @@
 import express from "express";
+import { PostController } from "./post.controller";
 
 const router = express.Router();
 
-router.post("/", (req, res) => {
-  // Logic to create a new post
-  res.status(201).send("Post created");
-});
+router.post("/", PostController.createPost);
 export const PostRouter = router;
