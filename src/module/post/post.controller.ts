@@ -1,10 +1,19 @@
 import { Request, Response } from "express";
+import { postService } from "./post.service";
 
 const createPost = async (req:Request, res:Response) =>{
   
-  // Logic to create a new post
-  res.status(201).send("Post created by Selim");
-  console.log(req.body)
+  
+
+  try {
+    const result = await postService.createPost(req.body)
+    res.status(201).json(result)
+  } catch (error) {
+    res.status(400).json({
+      error: "post creation failed",
+      details: error
+    })
+  }
 
 }
 
