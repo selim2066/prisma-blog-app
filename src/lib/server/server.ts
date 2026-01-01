@@ -4,7 +4,7 @@ import { prisma } from "../prisma";
 dotenv.config();
 const PORT = process.env.PORT;
 
-console.log(typeof(PORT))
+//console.log(typeof(PORT))
 async function main() {
   try {
     await prisma.$connect();
