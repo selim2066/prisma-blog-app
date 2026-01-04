@@ -54,5 +54,6 @@ const authMiddleware = (...role: UserRole[]) => {
   };
 };
 
-router.post("/", authMiddleware(UserRole.ADMIN), PostController.createPost);
+router.post("/", authMiddleware(UserRole.USER), PostController.createPost);
+
 export const PostRouter = router;
