@@ -9,6 +9,7 @@ const authMiddleware = ()=>{
  const session = await auth.api.getSession({
       headers:req.headers as any
     });
+    console.log(session?.user.role)
  next()
 }}
 
