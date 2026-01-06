@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { postService } from "./post.service";
+import { get } from "node:http";
 
 const getAllPosts = async (req: Request, res: Response) => {
   try {
@@ -32,4 +33,5 @@ const createPost = async (req: Request, res: Response) => {
 
 export const PostController = {
   createPost,
+  getAllPosts
 };
