@@ -1,6 +1,18 @@
 import { Request, Response } from "express";
 import { postService } from "./post.service";
 
+const getAllPosts = async (req: Request, res: Response) => {
+  try {
+    const result = await postService.getAllPosts();
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(400).json({
+      error: "Failed to fetch posts",
+      details: error,
+    });
+  }
+};
+
 const createPost = async (req: Request, res: Response) => {
   try {
     //console.log(req.user)

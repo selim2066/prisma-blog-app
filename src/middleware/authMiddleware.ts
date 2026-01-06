@@ -25,10 +25,11 @@ const authMiddleware = (...role: UserRole[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       //headers
+      console.log(req.headers.cookie)
       const session = await auth.api.getSession({
         headers: req.headers as any,
       });
-
+console.log(session)
       if (!session) {
         return res.status(401).json({ message: "Unauthorized" });
       }
