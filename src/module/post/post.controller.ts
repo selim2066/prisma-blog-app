@@ -4,9 +4,10 @@ import { get } from "node:http";
 
 const getAllPosts = async (req: Request, res: Response) => {
   try {
-    const search = req.query.search
-    console.log(search)
-    const result = await postService.getAllPosts();
+    const search = req.query.search;
+    const searchString = typeof search === "string" ? search : undefined;
+    //console.log(typeof search, search)
+    const result = await postService.getAllPosts({search:searchString});
     res.status(200).json(result);
 
 

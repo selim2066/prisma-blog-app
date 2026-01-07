@@ -1,9 +1,16 @@
 import { Post } from "../../../generated/prisma/client";
 import { prisma } from "../../lib/prisma";
 
-const getAllPosts = async()=>{
+const getAllPosts = async(payload:{search?:string|undefined})=>{
   // Logic to fetch all posts from the database
-  const result = await prisma.post.findMany();
+  const result = await prisma.post.findMany({
+    where: {
+      title: {
+        contains: payload.search as string,
+        mode: "insensitive"
+      }
+    }
+  });
   return result;
 }
 
