@@ -1,15 +1,35 @@
 import { Post } from "../../../generated/prisma/client";
+import { PostWhereInput } from "../../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 
-const getAllPosts = async (payload: { search?: string | undefined }) => {
+const getAllPosts = async (payload: {
+  search?: string | undefined;
+  tags?: string[];
+}) => {
   // Logic to fetch all posts from the database
+  const { search, tags } = payload;
+  const andFilters:PostWhereInput[] = [];
+
+  if (tags && tags.length > 0) {
+    andFilters.push({
+      tags: { hasEvery: tags || [] },
+    });
+  }
+
+   // ✅ SEARCH FILTER (OR)
+  if (search) {
+    andFilters.push({
+      OR: [
+        { title: { contains: search, mode: "insensitive" } },
+        { content: { contains: search, mode: "insensitive" } },
+       // { tags: { has: search } },
+      ],
+    });
+  }
+
   const result = await prisma.post.findMany({
     where: {
-      OR: [
-        { title: { contains: payload.search || "", mode: "insensitive" } },
-        { content: { contains: payload.search || "", mode: "insensitive" } },
-        { tags: { has: payload.search || "" } },
-      ],
+      AND: andFilters,
     },
   });
   return result;
