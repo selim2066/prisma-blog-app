@@ -4,10 +4,10 @@ import { prisma } from "../../lib/prisma";
 
 const getAllPosts = async (payload: {
   search?: string | undefined;
-  tags?: string[];
+  tags?: string[]; isFeatured?: boolean | undefined;
 }) => {
   // Logic to fetch all posts from the database
-  const { search, tags } = payload;
+  const { search, tags, isFeatured } = payload;
   const andFilters:PostWhereInput[] = [];
 
   if (tags && tags.length > 0) {
@@ -26,6 +26,9 @@ const getAllPosts = async (payload: {
       ],
     });
   }
+if(typeof isFeatured === 'boolean'){
+  andFilters.push({isFeatured})
+}
 
   const result = await prisma.post.findMany({
     where: {
