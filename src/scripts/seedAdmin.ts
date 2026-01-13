@@ -6,7 +6,7 @@ async function seedAdmin() {
     // admin data
     const adminData = {
       name: "adminAmi",
-      email: "selim@gmail.com",
+      email: "selim1@gmail.com",
       role: UserRole.ADMIN,
       password: "admin123",
     };
@@ -26,7 +26,7 @@ async function seedAdmin() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          //"Origin": "http://localhost:5000",
+          Origin: "http://localhost:4001",
         },
         body: JSON.stringify(adminData),
       }
@@ -42,12 +42,10 @@ async function seedAdmin() {
       console.log("Admin user created successfully.");
       await prisma.user.update({
         where: { email: adminData.email },
-        data: { emailVerified: true }
-      })
-      console.log("***** Email Verification Status updated *****")
+        data: { emailVerified: true },
+      });
+      console.log("***** Email Verification Status updated *****");
     }
-
- 
   } catch (error) {
     console.error("Error seeding admin user:", error);
   }
