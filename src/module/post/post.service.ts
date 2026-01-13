@@ -10,8 +10,8 @@ const getAllPosts = async (payload: {
   page: number;
   limit: number;
   skip: number;
-  sortBy?: string | undefined;
-  sortOrder?: "asc" | "desc" | undefined;
+  sortBy : string;
+  sortOrder: string | undefined;
 }) => {
 
 
@@ -53,7 +53,7 @@ const getAllPosts = async (payload: {
       AND: andFilters,
     },
     orderBy:{
-      [sortBy || 'createdAt']: sortOrder || 'desc'
+      [sortBy]: sortOrder
     }
   });
   return result;
