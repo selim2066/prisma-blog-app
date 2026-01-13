@@ -4,13 +4,20 @@ import { prisma } from "../../lib/prisma";
 
 const getAllPosts = async (payload: {
   search?: string | undefined;
-  tags?: string[]; isFeatured?: boolean | undefined;
+  tags?: string[];
+  isFeatured?: boolean | undefined;
   status?: PostStatus | undefined;
+  page: number;
+  limit: number;
+  skip: number;
+  sortBy?: string | undefined;
+  sortOrder?: "asc" | "desc" | undefined;
 }) => {
-  // Logic to fetch all posts from the database
-  const { search, tags, isFeatured, status } = payload;
-  const andFilters:PostWhereInput[] = [];
 
+
+  // Logic to fetch all posts from the database
+  const { search, tags, isFeatured, status, page, limit, skip, sortBy, sortOrder } = payload;
+  const andFilters: PostWhereInput[] = [];
 
   // tags filter
   if (tags && tags.length > 0) {
@@ -19,30 +26,35 @@ const getAllPosts = async (payload: {
     });
   }
 
-   // SEARCH FILTER (OR)
+  // SEARCH FILTER (OR)
   if (search) {
     andFilters.push({
       OR: [
         { title: { contains: search, mode: "insensitive" } },
         { content: { contains: search, mode: "insensitive" } },
-       // { tags: { has: search } },
+        // { tags: { has: search } },
       ],
     });
   }
   // isFeatured filter
-if(typeof isFeatured === 'boolean'){
-  andFilters.push({isFeatured})
-}
+  if (typeof isFeatured === "boolean") {
+    andFilters.push({ isFeatured });
+  }
 
-// status filter
-if(status){
-  andFilters.push({status})
-}
+  // status filter
+  if (status) {
+    andFilters.push({ status });
+  }
 
   const result = await prisma.post.findMany({
+    take: limit,
+    skip: skip,
     where: {
       AND: andFilters,
     },
+    orderBy:{
+      [sortBy || 'createdAt']: sortOrder || 'desc'
+    }
   });
   return result;
 };
