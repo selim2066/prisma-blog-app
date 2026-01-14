@@ -97,7 +97,17 @@ const getPostById = async (postId: string|undefined) => {
   if (!postId) {
     throw new Error("Post ID is required");
   }
-  const post = await prisma.post.findUnique({
+
+  const viewedPost = await prisma.post.update({
+    where: {
+      id: postId,
+    },
+    data: {
+      views: { increment: 1 },
+    },
+  });
+
+      const post = await prisma.post.findUnique({
     where: {
       id: postId,
     },
