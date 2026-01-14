@@ -46,7 +46,7 @@ const getAllPosts = async (payload: {
     andFilters.push({ status });
   }
 
-  const result = await prisma.post.findMany({
+  const allpost = await prisma.post.findMany({
     take: limit,
     skip: skip,
     where: {
@@ -56,7 +56,20 @@ const getAllPosts = async (payload: {
       [sortBy]: sortOrder
     }
   });
-  return result;
+
+  const totalPosts = await prisma.post.count({
+    where: {
+      AND: andFilters,
+    },
+  });
+  return { data: allpost,
+    pagination:{
+      totalPosts,
+      page,
+      limit,
+      totalPages: Math.ceil(totalPosts / limit)
+    }
+   };
 };
 
 const createPost = async (
