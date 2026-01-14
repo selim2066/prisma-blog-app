@@ -2,7 +2,7 @@ type IOptions = {
   page?: number | string;
   limit?: number | string;
   sortBy?: string;
-  sortOrder?: "asc" | "desc";
+  sortOrder?: string;
 };
 
 type IOptionsReturn = {
