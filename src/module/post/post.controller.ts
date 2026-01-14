@@ -3,6 +3,25 @@ import { PostStatus } from "../../../generated/prisma/enums";
 import { postService } from "./post.service";
 import paginationSortingHelper from "../../helpers/paginationSortingHelpers";
 
+// ! createPost controller
+const createPost = async (req: Request, res: Response) => {
+  try {
+    //console.log(req.user)
+    const user = req.user;
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    const result = await postService.createPost(req.body, user.id as string);
+    res.status(201).json(result);
+  } catch (error) {
+    res.status(400).json({
+      error: "post creation failed",
+      details: error,
+    });
+  }
+};
+
+// ! getAllPosts controller
 const getAllPosts = async (req: Request, res: Response) => {
   
   try {
@@ -56,24 +75,25 @@ const getAllPosts = async (req: Request, res: Response) => {
   }
 };
 
-const createPost = async (req: Request, res: Response) => {
+// ! get post by id controller
+
+const getPostById = async (req: Request, res: Response) => {
   try {
-    //console.log(req.user)
-    const user = req.user;
-    if (!user) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-    const result = await postService.createPost(req.body, user.id as string);
-    res.status(201).json(result);
+    const postId = req.params.id;
+    const result = await postService.getPostById(postId);
+    res.status(200).json(result);
   } catch (error) {
     res.status(400).json({
-      error: "post creation failed",
+      error: "Failed to fetch post",
       details: error,
     });
   }
 };
 
+
+
 export const PostController = {
   createPost,
   getAllPosts,
+  getPostById,
 };

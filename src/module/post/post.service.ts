@@ -2,6 +2,25 @@ import { Post, PostStatus } from "../../../generated/prisma/client";
 import { PostWhereInput } from "../../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 
+
+
+// !create post
+const createPost = async (
+  data: Omit<Post, "id" | "createdAt" | "updatedAt" | "authorId">,
+  userId: string
+) => {
+  // Logic to create a new post in the database
+  const result = await prisma.post.create({
+    data: {
+      ...data,
+      authorId: userId,
+    },
+  });
+  return result;
+};
+
+
+// !get all posts
 const getAllPosts = async (payload: {
   search?: string | undefined;
   tags?: string[];
@@ -72,21 +91,22 @@ const getAllPosts = async (payload: {
    };
 };
 
-const createPost = async (
-  data: Omit<Post, "id" | "createdAt" | "updatedAt" | "authorId">,
-  userId: string
-) => {
-  // Logic to create a new post in the database
-  const result = await prisma.post.create({
-    data: {
-      ...data,
-      authorId: userId,
+// ! get post by id
+const getPostById = async (postId: string|undefined) => {
+  console.log(`get post by id ${postId}`);
+  if (!postId) {
+    throw new Error("Post ID is required");
+  }
+  const post = await prisma.post.findUnique({
+    where: {
+      id: postId,
     },
   });
-  return result;
+  return post;
 };
 
 export const postService = {
   createPost,
   getAllPosts,
+  getPostById,
 };

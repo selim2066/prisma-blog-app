@@ -9,4 +9,6 @@ router.get("/", PostController.getAllPosts);
 
 router.post("/", authMiddleware(UserRole.USER), PostController.createPost);
 
+router.get("/:id", PostController.getPostById);
+
 export const PostRouter = router;
