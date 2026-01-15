@@ -119,6 +119,9 @@ const getPostById = async (postId: string | undefined) => {
       where: {
         id: postId,
       },
+      include: {
+        comments: true,
+      }
     });
     return post;
   });
