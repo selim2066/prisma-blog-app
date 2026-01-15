@@ -120,8 +120,13 @@ const getPostById = async (postId: string | undefined) => {
         id: postId,
       },
       include: {
-        comments: true,
-      }
+        comments: {
+          where: { parentId: null },
+          include: {
+            replies: true,
+          },
+        },
+      },
     });
     return post;
   });
