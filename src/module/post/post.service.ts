@@ -76,6 +76,9 @@ const getAllPosts = async (payload: {
     where: {
       AND: andFilters,
     },
+    include: {
+      _count: { select: { comments: true } },
+    },
     orderBy: {
       [sortBy]: sortOrder,
     },
@@ -126,6 +129,7 @@ const getPostById = async (postId: string | undefined) => {
             replies: true,
           },
         },
+        _count: { select: { comments: true } },
       },
     });
     return post;
