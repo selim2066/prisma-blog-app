@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { CommentService } from "./comment.service";
 
+
+// !createCommentController
 const createCommentController = async (req: Request, res: Response) => {
   try {
     req.body.authorId = req.user?.id; //!how i get user id from auth middleware
@@ -17,6 +19,26 @@ const createCommentController = async (req: Request, res: Response) => {
   }
 };
 
+// !getCommentbyIdController
+const getCommentByIdController = async (req: Request, res: Response) => {
+  try {
+    const { commentId } = req.params;
+    const resultComment = await CommentService.getCommentById(
+      commentId as string
+    );
+    return res.status(200).json({
+      message: "Comment get successfully",
+      data: resultComment,
+    });
+  } catch (error) {
+    res.status(400).json({
+      error: "commentid get/ fetched failed",
+      details: error,
+    });
+  }
+};
+
 export const CommentController = {
   createCommentController,
+  getCommentByIdController
 };

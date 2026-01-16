@@ -4,5 +4,6 @@ import { authMiddleware, UserRole } from "../../middleware/authMiddleware";
 const router = express.Router();
 
 router.post('/', authMiddleware(UserRole.ADMIN, UserRole.USER), CommentController.createCommentController)
+router.get('/:commentId', CommentController.getCommentByIdController)
 
 export const CommentRouter: Router = router;
