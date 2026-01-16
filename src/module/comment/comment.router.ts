@@ -7,5 +7,6 @@ router.post('/', authMiddleware(UserRole.ADMIN, UserRole.USER), CommentControlle
 router.get('/:commentId', CommentController.getCommentByIdController)
 router.get('/author/:authorId', CommentController.getCommentsByAuthorIDController)
 router.delete('/:deleteId', authMiddleware(UserRole.ADMIN, UserRole.USER), CommentController.deleteCommentController)
+router.patch('/:commentId', authMiddleware(UserRole.ADMIN, UserRole.USER), CommentController.updateCommentController)
 
 export const CommentRouter: Router = router;

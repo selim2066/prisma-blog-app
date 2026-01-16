@@ -82,9 +82,20 @@ const deleteCommentService = async (commentId: string, authorId: string) => {
   })
 };
 
+// ! update comment service
+
+const updateCommentService = async (
+  commentId: string,
+  authorId: string, data: { content: string }
+) => {
+  // find the comment}
+  console.log(data, commentId, authorId)
+}
+
 export const CommentService = {
   createCommentService,
   getCommentById,
   getCommentsByAuthorId,
   deleteCommentService,
+  updateCommentService,
 };
