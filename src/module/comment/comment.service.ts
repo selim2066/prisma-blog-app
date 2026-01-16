@@ -63,8 +63,14 @@ const getCommentsByAuthorId = (authorId: string) => {
   });
 };
 
+//! delete comment
+const deleteCommentService = async (commentId: string, authorId:string) => {
+  console.log("delete id ", commentId, authorId)
+}
+
 export const CommentService = {
   createCommentService,
   getCommentById,
   getCommentsByAuthorId,
+  deleteCommentService,
 };
