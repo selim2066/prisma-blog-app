@@ -39,10 +39,10 @@ model Comment {
   authorId String
   // foreign key relations
   postId   String
-  post     Post      @relation(fields: [postId], references: [id])
+  post     Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
   parentId String?
   // self relation for comment replies
-  parent   Comment?  @relation("commentsReplies", fields: [parentId], references: [id])
+  parent   Comment?  @relation("commentsReplies", fields: [parentId], references: [id], onDelete: Cascade)
   replies  Comment[] @relation("commentsReplies")
 
   status    CommentStatus @default(APPROVED)
