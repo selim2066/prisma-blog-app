@@ -43,7 +43,13 @@ const getCommentById = async (id: string) => {
   });
 };
 
+// ! get comments by authorID
+const getCommentsByAuthorId =(author:string)=>{
+  console.log(author)
+}
+
 export const CommentService = {
   createCommentService,
   getCommentById,
+  getCommentsByAuthorId
 };
