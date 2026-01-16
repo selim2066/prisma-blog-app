@@ -37,19 +37,34 @@ const getCommentById = async (id: string) => {
     where: {
       id,
     },
-   include:{
-    post:{ select:{ title:true, id:true } },
-   }
+    include: {
+      post: { select: { title: true, id: true } },
+    },
   });
 };
 
 // ! get comments by authorID
-const getCommentsByAuthorId =(author:string)=>{
-  console.log(author)
-}
+const getCommentsByAuthorId = (authorId: string) => {
+  return prisma.comment.findMany({
+    where: {
+      authorId,
+    },
+    include: {
+      post: {
+        select: {
+          title: true,
+          id: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+};
 
 export const CommentService = {
   createCommentService,
   getCommentById,
-  getCommentsByAuthorId
+  getCommentsByAuthorId,
 };
