@@ -89,6 +89,19 @@ const updateCommentService = async (
   authorId: string, data: { content: string }
 ) => {
   // find the comment}
+  const commentData = await prisma.comment.findUniqueOrThrow({
+    where:{
+      id: commentId,
+      authorId,
+    }
+  });
+  // update the comment
+  return await prisma.comment.update({
+    where:{
+      id: commentData.id,
+    },
+    data,
+  })
   console.log(data, commentId, authorId)
 }
 
