@@ -102,7 +102,7 @@ const updateCommentService = async (
     },
     data,
   })
-  console.log(data, commentId, authorId)
+  //console.log(data, commentId, authorId)
 }
 
 export const CommentService = {
