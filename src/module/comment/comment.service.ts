@@ -105,10 +105,16 @@ const updateCommentService = async (
   //console.log(data, commentId, authorId)
 }
 
+// ! moderate comment service by admin
+const moderateCommentService = async ()=>{
+  console.log("moderate working")
+}
+
 export const CommentService = {
   createCommentService,
   getCommentById,
   getCommentsByAuthorId,
   deleteCommentService,
   updateCommentService,
+  moderateCommentService
 };

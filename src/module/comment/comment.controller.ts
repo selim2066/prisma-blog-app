@@ -102,10 +102,18 @@ const updateCommentController = async (req: Request, res: Response) => {
   }
 }
 
+// ! moderate comment controller by admin
+
+const moderateCommentController = async (req: Request, res: Response) => {
+
+  const moderateResult = await CommentService.moderateCommentService();
+}
+
 export const CommentController = {
   createCommentController,
   getCommentByIdController,
   getCommentsByAuthorIDController,
   deleteCommentController,
   updateCommentController,
+  moderateCommentController
 };
