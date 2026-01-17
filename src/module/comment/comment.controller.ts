@@ -114,10 +114,12 @@ const moderateCommentController = async (req: Request, res: Response) => {
       message: "Comment moderated successfully",
       data: moderateResult,
     });
+
   } catch (error) {
+    const eMessage = (error instanceof Error) ? error.message :"comment moderate failed"
     res.status(400).json({
       error: "comment moderate failed",
-      details:error
+      details: eMessage,
     })
     
   }

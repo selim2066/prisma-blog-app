@@ -1,3 +1,4 @@
+import e from "express";
 import { CommentStatus } from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 
@@ -109,11 +110,17 @@ const updateCommentService = async (
 // ! moderate comment service by admin
 const moderateCommentService = async (commentId:string, data:{status: CommentStatus})=>{
   //console.log(commentId, data)
-  await prisma.comment.findUniqueOrThrow({
+  const commentData =await prisma.comment.findUniqueOrThrow({
     where:{
       id: commentId,
-    }
+    },
+    select:{id: true, status: true}
   })
+
+  // optimise update status
+  if(data.status === commentData.status){
+    throw new Error(`Comment is already in the desired status ${data.status}`);
+  }
   return await prisma.comment.update({
     where:{
       id: commentId,
