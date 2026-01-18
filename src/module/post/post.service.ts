@@ -5,7 +5,7 @@ import { prisma } from "../../lib/prisma";
 // !create post
 const createPost = async (
   data: Omit<Post, "id" | "createdAt" | "updatedAt" | "authorId">,
-  userId: string
+  userId: string,
 ) => {
   // Logic to create a new post in the database
   const result = await prisma.post.create({
@@ -137,9 +137,18 @@ const getPostById = async (postId: string | undefined) => {
 };
 
 // !getMY posts
-const getMyPosts = async (userId: string) => {
-  console.log(userId)
-}
+const getMyPosts = async (authorId: string) => {
+  console.log(authorId);
+  const myPosts = await prisma.post.findMany({
+    where: {
+      authorId: authorId,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  return myPosts;
+};
 export const postService = {
   createPost,
   getAllPosts,
