@@ -90,6 +90,20 @@ const getPostById = async (req: Request, res: Response) => {
   }
 };
 
+// ! get my posts controller
+
+const getMyPosts = async (req: Request, res: Response) => {
+  try {
+    const authorId = req.user?.id;
+    const result = await postService.getMyPosts(authorId as string);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(400).json({
+      error: "Failed to fetch post",
+      details: error,
+    });
+  }
+};
 
 
 export const PostController = {

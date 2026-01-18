@@ -153,4 +153,5 @@ export const postService = {
   createPost,
   getAllPosts,
   getPostById,
+  getMyPosts,
 };
