@@ -136,6 +136,10 @@ const getPostById = async (postId: string | undefined) => {
   });
 };
 
+// !getMY posts
+const getMyPosts = async (userId: string) => {
+  console.log(userId)
+}
 export const postService = {
   createPost,
   getAllPosts,
