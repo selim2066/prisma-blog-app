@@ -92,7 +92,7 @@ const getPostById = async (req: Request, res: Response) => {
 
 // ! get my posts controller
 
-const getMyPosts = async (req: Request, res: Response) => {
+const getMyPostsController = async (req: Request, res: Response) => {
   try {
     const authorId = req.user?.id;
     const result = await postService.getMyPosts(authorId as string);
@@ -110,4 +110,5 @@ export const PostController = {
   createPost,
   getAllPosts,
   getPostById,
+  getMyPostsController,
 };
