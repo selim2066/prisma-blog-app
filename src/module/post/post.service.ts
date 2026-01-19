@@ -138,7 +138,7 @@ const getPostById = async (postId: string | undefined) => {
 
 // !getMY posts
 const getMyPosts = async (authorId: string) => {
-  console.log(authorId);
+  //console.log(authorId);
   const myPosts = await prisma.post.findMany({
     where: {
       authorId: authorId,
