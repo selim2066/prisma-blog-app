@@ -31,7 +31,7 @@ const authMiddleware = (...role: UserRole[]) => {
       });
       //console.log(session);
       if (!session) {
-        return res.status(401).json({ message: "Unauthorized" });
+        return res.status(401).json({ message: "Unauthorized , session nai, authmiddleware" });
       }
       if (!session.user.emailVerified) {
         return res.status(401).json({ message: "Email not verified" });

@@ -19,6 +19,7 @@ const createPost = async (
 
 // !get all posts
 const getAllPosts = async (payload: {
+  authorId?: string | undefined;
   search?: string | undefined;
   tags?: string[];
   isFeatured?: boolean | undefined;
@@ -29,6 +30,8 @@ const getAllPosts = async (payload: {
   sortBy: string;
   sortOrder: string | undefined;
 }) => {
+
+  
   // Logic to fetch all posts from the database
   const {
     search,
@@ -42,6 +45,11 @@ const getAllPosts = async (payload: {
     sortOrder,
   } = payload;
   const andFilters: PostWhereInput[] = [];
+
+  // authorId filter
+  // if (payload.authorId) {
+  //   andFilters.push({ authorId: payload.authorId });
+  // }
 
   // tags filter
   if (tags && tags.length > 0) {
