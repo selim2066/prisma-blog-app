@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { PostStatus } from "../../../generated/prisma/enums";
-import { postService } from "./post.service";
 import paginationSortingHelper from "../../helpers/paginationSortingHelpers";
+import { postService } from "./post.service";
 
 // ! createPost controller
 const createPost = async (req: Request, res: Response) => {
@@ -21,31 +21,33 @@ const createPost = async (req: Request, res: Response) => {
   }
 };
 
-// ! getAllPosts controller
+// ! ## getAllPosts controller
 const getAllPosts = async (req: Request, res: Response) => {
-  
   try {
     const search = req.query.search;
     const tags = (req.query.tags as string)?.split(",") || [];
-    
+
     const searchString = typeof search === "string" ? search : undefined;
-    
+
     const isFeatured = req.query.isFeatured
       ? req.query.isFeatured === "true"
         ? true
         : req.query.isFeatured === "false"
-        ? false
-        : undefined
+          ? false
+          : undefined
       : undefined;
 
     const status = req.query.status as PostStatus | undefined;
 
+    // 🔥 NEW: authorId from query
+    const authorId =
+      typeof req.query.authorId === "string" ? req.query.authorId : undefined;
+
     //!pagination
 
-    const { page, limit, skip, sortBy, sortOrder } = paginationSortingHelper(req.query);
-
-
-
+    const { page, limit, skip, sortBy, sortOrder } = paginationSortingHelper(
+      req.query
+    );
 
     //! enum validation (status)
     // const allowedStatus = ["DRAFT", "PUBLISHED"] as const;
@@ -56,6 +58,7 @@ const getAllPosts = async (req: Request, res: Response) => {
     //     : undefined;
 
     const result = await postService.getAllPosts({
+      authorId,
       search: searchString,
       tags,
       isFeatured,
@@ -64,7 +67,7 @@ const getAllPosts = async (req: Request, res: Response) => {
       limit,
       skip,
       sortBy,
-      sortOrder,
+      sortOrder
     });
     res.status(200).json(result);
   } catch (error) {
@@ -108,7 +111,6 @@ const getMyPostsController = async (req: Request, res: Response) => {
     });
   }
 };
-
 
 export const PostController = {
   createPost,

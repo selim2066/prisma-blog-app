@@ -29,6 +29,7 @@ const getAllPosts = async (payload: {
   skip: number;
   sortBy: string;
   sortOrder: string | undefined;
+
 }) => {
 
   
@@ -46,10 +47,10 @@ const getAllPosts = async (payload: {
   } = payload;
   const andFilters: PostWhereInput[] = [];
 
-  // authorId filter
-  // if (payload.authorId) {
-  //   andFilters.push({ authorId: payload.authorId });
-  // }
+  //authorId filter
+  if (payload.authorId) {
+    andFilters.push({ authorId: payload.authorId });
+  }
 
   // tags filter
   if (tags && tags.length > 0) {
