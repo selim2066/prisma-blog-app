@@ -7,9 +7,10 @@ import { authMiddleware, UserRole } from "../../middleware/authMiddleware";
 const router = express.Router();
 router.get("/", PostController.getAllPosts);
 
-router.post("/", authMiddleware(UserRole.USER), PostController.createPost);
+router.post("/", authMiddleware(UserRole.USER, UserRole.ADMIN), PostController.createPost);
 
-router.get("/:id", PostController.getPostById);
 router.get("/my-posts", authMiddleware(UserRole.USER,UserRole.ADMIN), PostController.getMyPostsController);
+// always dynamic route at the end
+router.get("/:id", PostController.getPostById);
 
 export const PostRouter = router;

@@ -95,6 +95,10 @@ const getPostById = async (req: Request, res: Response) => {
 const getMyPostsController = async (req: Request, res: Response) => {
   try {
     const authorId = req.user?.id;
+    if (!authorId) {
+      throw new Error("User ID not found in request");
+    }
+    //console.log(authorId)
     const result = await postService.getMyPosts(authorId as string);
     res.status(200).json(result);
   } catch (error) {
