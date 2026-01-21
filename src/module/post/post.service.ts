@@ -154,7 +154,7 @@ const getMyPosts = async (authorId: string) => {
     select: { id: true },
   });
 
-  
+
   const myPosts = await prisma.post.findMany({
     where: {
       authorId: authorId,
@@ -169,9 +169,42 @@ const getMyPosts = async (authorId: string) => {
   });
   return myPosts;
 };
+
+// ! update post
+const updatePost = async (postId:string, authorId:string, data:Partial<Post>) => {
+  // Logic to update a post in the database
+  //console.log(postId, authorId, data)
+  
+  // find the post
+  const postData= await prisma.post.findUniqueOrThrow({
+    where:{
+      id:postId,
+    },
+    select:{
+      authorId:true,
+      id:true,
+    }
+  })
+
+  // check if the authorId matches
+  if(postData.authorId !== authorId){
+    throw new Error("You are not authorized to update this post");
+  }
+
+  // update the post
+  return await prisma.post.update({
+    where: {
+      id: postId,
+    },
+     data,
+  });
+
+}
+
 export const postService = {
   createPost,
   getAllPosts,
   getPostById,
   getMyPosts,
+  updatePost,
 };

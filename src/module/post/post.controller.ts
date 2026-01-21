@@ -112,9 +112,33 @@ const getMyPostsController = async (req: Request, res: Response) => {
   }
 };
 
+// ! update post controller
+const updatePostController = async (req: Request, res: Response) => {
+  try {
+    const {postId} = req.params;
+    const updateData = req.body;
+    const authorId = req.user?.id;
+    if (!authorId) {
+      throw new Error("User ID not found in request");
+    }
+    if (!postId) {
+      throw new Error("Post ID is required");
+    }
+    const updatedPost = await postService.updatePost(postId, authorId, updateData);
+    res.status(200).json({ message: "Post updated successfully", updatedPost });
+  } catch (error) {
+    console.log("update post error: ",error)
+    res.status(400).json({
+      error: "Failed to update post Controller",
+      
+    });
+  }
+};
+
 export const PostController = {
   createPost,
   getAllPosts,
   getPostById,
   getMyPostsController,
+  updatePostController,
 };

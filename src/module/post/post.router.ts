@@ -12,5 +12,6 @@ router.post("/", authMiddleware(UserRole.USER, UserRole.ADMIN), PostController.c
 router.get("/my-posts", authMiddleware(UserRole.USER,UserRole.ADMIN), PostController.getMyPostsController);
 // always dynamic route at the end
 router.get("/:id", PostController.getPostById);
+router.patch("/:postId", authMiddleware(UserRole.USER,UserRole.ADMIN), PostController.updatePostController);
 
 export const PostRouter = router;
