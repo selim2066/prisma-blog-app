@@ -44,7 +44,10 @@ const authMiddleware = (...role: UserRole[]) => {
         //phone:session.user.phone,
         //status:session.user.status,
         emailVerified: session.user.emailVerified,
+        status: session.user.status as string,
       };
+
+      console.log(req.user)
 
       if (role.length && !role.includes(req.user.role as UserRole)) {
         return res.status(403).json({ message: "Forbidden bro..." });

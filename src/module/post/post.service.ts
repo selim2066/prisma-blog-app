@@ -29,10 +29,7 @@ const getAllPosts = async (payload: {
   skip: number;
   sortBy: string;
   sortOrder: string | undefined;
-
 }) => {
-
-  
   // Logic to fetch all posts from the database
   const {
     search,
@@ -148,12 +145,26 @@ const getPostById = async (postId: string | undefined) => {
 // !getMY posts
 const getMyPosts = async (authorId: string) => {
   //console.log(authorId);
+
+  await prisma.user.findUniqueOrThrow({
+    where: {
+      id: authorId,
+      status: "ACTIVE",
+    },
+    select: { id: true },
+  });
+
+  
   const myPosts = await prisma.post.findMany({
     where: {
       authorId: authorId,
     },
     orderBy: {
       createdAt: "desc",
+    },
+
+    include: {
+      _count: { select: { comments: true } },
     },
   });
   return myPosts;
