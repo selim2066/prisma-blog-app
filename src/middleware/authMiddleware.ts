@@ -34,7 +34,7 @@ const authMiddleware = (...role: UserRole[]) => {
         return res.status(401).json({ message: "Unauthorized , session nai, authmiddleware" });
       }
       if (!session.user.emailVerified) {
-        return res.status(401).json({ message: "Email not verified" });
+        return res.status(401).json({ message: "Email not verified, authmiddleware" });
       }
 
       req.user = {
@@ -47,7 +47,7 @@ const authMiddleware = (...role: UserRole[]) => {
         status: session.user.status as string,
       };
 
-      console.log(req.user)
+      console.log("from authMiddleware req.user:", req.user);
 
       if (role.length && !role.includes(req.user.role as UserRole)) {
         return res.status(403).json({ message: "Forbidden bro..." });

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { PostStatus } from "../../../generated/prisma/enums";
 import paginationSortingHelper from "../../helpers/paginationSortingHelpers";
 import { postService } from "./post.service";
+import { UserRole } from "../../middleware/authMiddleware";
 
 // ! createPost controller
 const createPost = async (req: Request, res: Response) => {
@@ -46,7 +47,7 @@ const getAllPosts = async (req: Request, res: Response) => {
     //!pagination
 
     const { page, limit, skip, sortBy, sortOrder } = paginationSortingHelper(
-      req.query
+      req.query,
     );
 
     //! enum validation (status)
@@ -67,7 +68,7 @@ const getAllPosts = async (req: Request, res: Response) => {
       limit,
       skip,
       sortBy,
-      sortOrder
+      sortOrder,
     });
     res.status(200).json(result);
   } catch (error) {
@@ -115,7 +116,9 @@ const getMyPostsController = async (req: Request, res: Response) => {
 // ! update post controller
 const updatePostController = async (req: Request, res: Response) => {
   try {
-    const {postId} = req.params;
+    const user = req.user;
+   // console.log("from updatePostController user:", user);
+    const { postId } = req.params;
     const updateData = req.body;
     const authorId = req.user?.id;
     if (!authorId) {
@@ -124,13 +127,18 @@ const updatePostController = async (req: Request, res: Response) => {
     if (!postId) {
       throw new Error("Post ID is required");
     }
-    const updatedPost = await postService.updatePost(postId, authorId, updateData);
+    const isAdmin = user?.role === UserRole.ADMIN;
+    const updatedPost = await postService.updatePost(
+      postId,
+      authorId,
+      updateData,
+      isAdmin,
+    );
     res.status(200).json({ message: "Post updated successfully", updatedPost });
   } catch (error) {
-    console.log("update post error: ",error)
+    console.log("update post error: ", error);
     res.status(400).json({
       error: "Failed to update post Controller",
-      
     });
   }
 };

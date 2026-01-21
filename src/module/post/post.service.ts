@@ -171,7 +171,7 @@ const getMyPosts = async (authorId: string) => {
 };
 
 // ! update post
-const updatePost = async (postId:string, authorId:string, data:Partial<Post>) => {
+const updatePost = async (postId:string, authorId:string, data:Partial<Post>, isAdmin: boolean) => {
   // Logic to update a post in the database
   //console.log(postId, authorId, data)
   
@@ -187,7 +187,7 @@ const updatePost = async (postId:string, authorId:string, data:Partial<Post>) =>
   })
 
   // check if the authorId matches
-  if(postData.authorId !== authorId){
+  if(!isAdmin && (postData.authorId !== authorId)){
     throw new Error("You are not authorized to update this post");
   }
 
