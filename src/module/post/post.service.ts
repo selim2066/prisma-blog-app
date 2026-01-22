@@ -191,6 +191,10 @@ const updatePost = async (postId:string, authorId:string, data:Partial<Post>, is
     throw new Error("You are not authorized to update this post");
   }
 
+  if(!isAdmin){
+    delete data.isFeatured
+  }
+
   // update the post
   return await prisma.post.update({
     where: {
