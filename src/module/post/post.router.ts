@@ -13,5 +13,5 @@ router.get("/my-posts", authMiddleware(UserRole.USER,UserRole.ADMIN), PostContro
 // always dynamic route at the end
 router.get("/:id", PostController.getPostById);
 router.patch("/:postId", authMiddleware(UserRole.USER,UserRole.ADMIN), PostController.updatePostController);
-
+router.delete("/:postId", authMiddleware(UserRole.USER,UserRole.ADMIN), PostController.deletePostController);
 export const PostRouter = router;

@@ -88,7 +88,7 @@ const getPostById = async (req: Request, res: Response) => {
     res.status(200).json(result);
   } catch (error) {
     res.status(400).json({
-      error: "Failed to fetch post",
+      error: "Failed to fetch post getPostById",
       details: error,
     });
   }
@@ -107,7 +107,7 @@ const getMyPostsController = async (req: Request, res: Response) => {
     res.status(200).json(result);
   } catch (error) {
     res.status(400).json({
-      error: "Failed to fetch post",
+      error: "Failed to fetch post getMyPosts",
       details: error,
     });
   }
@@ -138,10 +138,38 @@ const updatePostController = async (req: Request, res: Response) => {
   } catch (error) {
     console.log("update post error: ", error);
     res.status(400).json({
-      error: "Failed to update post Controller",
+      error: "Failed to update post, Controller",
     });
   }
 };
+
+// ! delete post controller
+
+const deletePostController = async (req: Request, res: Response) => {
+try {
+  const user = req.user;
+  const { postId } = req.params;
+  const authorId = req.user?.id;
+  if (!authorId) {
+    throw new Error("User ID not found in request");
+  }
+  if (!postId) {
+    throw new Error("Post ID is required");
+  }
+  const isAdmin = user?.role === UserRole.ADMIN;
+  const result = await postService.deletePost(
+    postId,
+    authorId,
+    isAdmin,
+  );
+  res.status(200).json({ message: "Post deleted successfully, Controller", result });
+  
+} catch (error) {
+  console.log("delete post error: ", error);
+  res.status(400).json({
+    error: "Failed to delete post Controller",
+  })
+}}
 
 export const PostController = {
   createPost,
@@ -149,4 +177,5 @@ export const PostController = {
   getPostById,
   getMyPostsController,
   updatePostController,
+  deletePostController
 };

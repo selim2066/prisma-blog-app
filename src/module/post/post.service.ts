@@ -171,6 +171,9 @@ const getMyPosts = async (authorId: string) => {
 };
 
 // ! update post
+//#1 user only can update their own post, but not isFeatured field
+//#2 admin can update any post
+
 const updatePost = async (postId:string, authorId:string, data:Partial<Post>, isAdmin: boolean) => {
   // Logic to update a post in the database
   //console.log(postId, authorId, data)
@@ -186,7 +189,7 @@ const updatePost = async (postId:string, authorId:string, data:Partial<Post>, is
     }
   })
 
-  // check if the authorId matches
+  // check if the authorId matches and isAdmin
   if(!isAdmin && (postData.authorId !== authorId)){
     throw new Error("You are not authorized to update this post");
   }
@@ -205,10 +208,38 @@ const updatePost = async (postId:string, authorId:string, data:Partial<Post>, is
 
 }
 
+//! delete post 
+//#1 user only can delete their own post
+//#2 admin can delete any post
+
+const deletePost = async (postId:string, authorId:string, isAdmin: boolean) => {
+  // find the post
+  const postData= await prisma.post.findUniqueOrThrow({
+    where:{
+      id:postId,
+    },
+    select:{
+      authorId:true,
+      id:true,
+    }
+  })
+
+  // check if the authorId matches and isAdmin
+  if(!isAdmin && (postData.authorId !== authorId)){
+    throw new Error("You are not authorized to delete this post");
+  }
+  // delete the post
+  return await prisma.post.delete({
+    where:{
+      id:postId
+    }
+  })
+}
 export const postService = {
   createPost,
   getAllPosts,
   getPostById,
   getMyPosts,
   updatePost,
+  deletePost,
 };
