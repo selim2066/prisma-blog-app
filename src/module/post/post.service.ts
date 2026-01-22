@@ -1,4 +1,4 @@
-import { Post, PostStatus } from "../../../generated/prisma/client";
+import { CommentStatus, Post, PostStatus } from "../../../generated/prisma/client";
 import { PostWhereInput } from "../../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 
@@ -241,7 +241,7 @@ const deletePost = async (postId:string, authorId:string, isAdmin: boolean) => {
 const getStats = async ()=>{
   //console.log("this is get stats service")
   return await prisma.$transaction(async (tx)=>{
-    const [totalPosts, publishedPosts, draftPosts, archivedPosts, totalViews, totalComments] = await Promise.all([
+    const [totalPosts, publishedPosts, draftPosts, archivedPosts, totalViews, totalComments, totalUser, totalAdmin, users, approvedComment, rejectedComment] = await Promise.all([
       tx.post.count(),
       tx.post.count({ where: { status: "PUBLISHED" } }),
       tx.post.count({ where: { status: "DRAFT" } }),
@@ -251,6 +251,11 @@ const getStats = async ()=>{
         _sum: { views: true },
       }),
       tx.comment.count(),
+      tx.user.count(),
+      tx.user.count({ where: { role: "ADMIN" } }),
+      tx.user.count({ where: { role: "USER" } }),
+      tx.comment.count({ where: { status: CommentStatus.APPROVED } }),
+      tx.comment.count({ where: { status: CommentStatus.REJECT } }),
     ]);
     return {
       totalPosts,
@@ -258,7 +263,12 @@ const getStats = async ()=>{
       draftPosts,
       archivedPosts,
       totalViews: totalViews._sum.views || 0,
-      totalComments
+      totalComments,
+      totalUser,
+      totalAdmin,
+      users,
+      approvedComment,
+      rejectedComment
     };
   })
 }
