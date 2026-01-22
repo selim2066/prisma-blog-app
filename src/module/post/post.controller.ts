@@ -78,22 +78,19 @@ const getAllPosts = async (req: Request, res: Response) => {
 
 // ! get post by id controller
 
-const getPostById = async (req: Request, res: Response) => {
+const getPostById = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const postId = req.params.id;
     const result = await postService.getPostById(postId);
     res.status(200).json(result);
   } catch (error) {
-    res.status(400).json({
-      error: "Failed to fetch post getPostById",
-      details: error,
-    });
+    next(error);
   }
 };
 
 // ! get my posts controller
 
-const getMyPostsController = async (req: Request, res: Response) => {
+const getMyPostsController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const authorId = req.user?.id;
     if (!authorId) {
@@ -103,15 +100,12 @@ const getMyPostsController = async (req: Request, res: Response) => {
     const result = await postService.getMyPosts(authorId as string);
     res.status(200).json(result);
   } catch (error) {
-    res.status(400).json({
-      error: "Failed to fetch post getMyPosts",
-      details: error,
-    });
+    next(error);
   }
 };
 
 // ! update post controller
-const updatePostController = async (req: Request, res: Response) => {
+const updatePostController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const user = req.user;
    // console.log("from updatePostController user:", user);
@@ -134,15 +128,13 @@ const updatePostController = async (req: Request, res: Response) => {
     res.status(200).json({ message: "Post updated successfully", updatedPost });
   } catch (error) {
     console.log("update post error: ", error);
-    res.status(400).json({
-      error: "Failed to update post, Controller",
-    });
+   next(error);
   }
 };
 
 // ! delete post controller
 
-const deletePostController = async (req: Request, res: Response) => {
+const deletePostController = async (req: Request, res: Response, next: NextFunction) => {
 try {
   const user = req.user;
   const { postId } = req.params;
@@ -163,23 +155,19 @@ try {
   
 } catch (error) {
   console.log("delete post error: ", error);
-  res.status(400).json({
-    error: "Failed to delete post Controller",
-  })
+  next(error);
 }}
 
 // ! getStats controller
 
-const getStatsController = async (req: Request, res: Response) => {
+const getStatsController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const stats = await postService.getStats();
     res.status(200).json({ message: "Stats fetched successfully, C", stats });
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message: "stats failed";
     console.log("error from statController", error)
-    res.status(400).json({
-      error: errorMessage,
-    });
+    next(error);
   }
 }
 
