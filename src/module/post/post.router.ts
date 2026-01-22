@@ -15,4 +15,6 @@ router.get("/stats", authMiddleware(UserRole.ADMIN), PostController.getStatsCont
 router.get("/:id", PostController.getPostById);
 router.patch("/:postId", authMiddleware(UserRole.USER,UserRole.ADMIN), PostController.updatePostController);
 router.delete("/:postId", authMiddleware(UserRole.USER,UserRole.ADMIN), PostController.deletePostController);
+
+
 export const PostRouter = router;
