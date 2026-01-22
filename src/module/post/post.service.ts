@@ -235,6 +235,12 @@ const deletePost = async (postId:string, authorId:string, isAdmin: boolean) => {
     }
   })
 }
+
+// ! stats
+
+const getStats = async ()=>{
+  console.log("this is get stats service")
+}
 export const postService = {
   createPost,
   getAllPosts,
@@ -242,4 +248,5 @@ export const postService = {
   getMyPosts,
   updatePost,
   deletePost,
+  getStats
 };

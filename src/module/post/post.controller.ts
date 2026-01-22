@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import e, { Request, Response } from "express";
 import { PostStatus } from "../../../generated/prisma/enums";
 import paginationSortingHelper from "../../helpers/paginationSortingHelpers";
 import { postService } from "./post.service";
@@ -171,11 +171,27 @@ try {
   })
 }}
 
+// ! getStats controller
+
+const getStatsController = async (req: Request, res: Response) => {
+  try {
+    const stats = await postService.getStats();
+    res.status(200).json({ message: "Stats fetched successfully, C", stats });
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message: "stats failed";
+    console.log("error from statController", error)
+    res.status(400).json({
+      error: errorMessage,
+    });
+  }
+}
+
 export const PostController = {
   createPost,
   getAllPosts,
   getPostById,
   getMyPostsController,
   updatePostController,
-  deletePostController
+  deletePostController,
+  getStatsController,
 };
