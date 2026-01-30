@@ -1,4 +1,3 @@
-import e from "express";
 import { CommentStatus } from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 
