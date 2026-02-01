@@ -9,13 +9,18 @@ import { notFoundHandler } from "./middleware/notFound";
 
 
 const app: Application = express();
-app.all("/api/auth/*splat", toNodeHandler(auth));
 
-app.use(express.json());
+// first cors then better-auth , that was an error I made before
+// CORS middleware
 app.use(cors({
   origin: process.env.APP_URL || "http://localhost:3000",
   credentials: true,
 }))
+// better-auth route
+app.all("/api/auth/*splat", toNodeHandler(auth));
+
+app.use(express.json());
+
 
 // ! post router
 app.use("/post", PostRouter);
