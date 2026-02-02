@@ -19,7 +19,7 @@ app.use(cors({
 // better-auth route
 app.all("/api/auth/*splat", toNodeHandler(auth));
 
-app.use(express.json());
+// app.use(express.json());
 
 
 // ! post router
