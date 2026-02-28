@@ -70,7 +70,7 @@ const getAllPosts = async (req: Request, res: Response) => {
     res.status(200).json(result);
   } catch (error) {
     res.status(400).json({
-      error: "Failed to fetch posts",
+      error: "Failed to fetch posts Controller",
       details: error,
     });
   }
