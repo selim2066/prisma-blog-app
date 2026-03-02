@@ -9,7 +9,7 @@ type IOptionsReturn = {
   page: number;
   limit: number;
   sortBy?: string;
-  sortOrder?:string;
+  sortOrder?: "asc" | "desc";
   skip: number;
 };
 
@@ -19,14 +19,17 @@ const paginationSortingHelpers = (options: IOptions): IOptionsReturn => {
   const skip = (page - 1) * limit;
 
   const sortBy: string = options.sortBy || "createdAt";
-    const sortOrder: string = options.sortOrder || "desc";
+    //const sortOrder: string = options.sortOrder || "desc";
+   
+   const sortOrder = options.sortOrder === "asc" ? "asc" : "desc";
 
   return {
     page,
     limit,
     skip,
     sortBy,
-    sortOrder,
+    //sortOrder,
+    sortOrder
   };
 };
 
