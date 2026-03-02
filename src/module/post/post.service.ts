@@ -110,7 +110,7 @@ const getAllPosts = async (payload: {
 const getPostById = async (postId: string | undefined) => {
   console.log(`get post by id ${postId}`);
   if (!postId) {
-    throw new Error("Post ID is required");
+    throw new Error("Post ID is required controller");
   }
   //  transaction and rollback
 
