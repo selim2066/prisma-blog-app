@@ -189,7 +189,7 @@ const updatePost = async (postId:string, authorId:string, data:Partial<Post>, is
     }
   })
 
-  // check if the authorId matches and isAdmin
+  // check if the authorId matches and isAdmin.....
   if(!isAdmin && (postData.authorId !== authorId)){
     throw new Error("You are not authorized to update this post");
   }
